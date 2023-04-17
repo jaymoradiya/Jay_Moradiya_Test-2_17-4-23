@@ -19,10 +19,9 @@ namespace API.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<ApiResponseDto<IEnumerable<EmployeeDto>>>> GetAllEmployee(string sort)
+        public async Task<ActionResult<ApiResponseDto<IEnumerable<EmployeeDto>>>> GetAllEmployee([FromQuery] FilterOrSortParams filterOrSortParams)
         {
-            Enum.TryParse(sort, out Sort sortEnum);
-            var employees = await _employeeRepository.GetEmployeesAsync(sortEnum);
+            var employees = await _employeeRepository.GetEmployeesAsync(filterOrSortParams);
 
             if (employees == null)
             {
@@ -56,6 +55,8 @@ namespace API.Controllers
 
             var employee = _mapper.Map<Employee>(registerEmployeeDto);
             employee.Email = employee.Email.ToLower();
+            employee.Department = employee.Department.ToLower();
+            employee.Gender = employee.Gender.ToLower();
 
             _employeeRepository.CreateEmployee(employee);
 

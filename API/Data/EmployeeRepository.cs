@@ -5,6 +5,7 @@ using API.DTOs;
 using API.Entity;
 using API.Helpers;
 using API.Interfaces;
+using System.Linq;
 
 namespace API.Data
 {
@@ -50,21 +51,48 @@ namespace API.Data
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync(Sort sort)
+        public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync(FilterOrSortParams filterOrSortParams)
         {
-            var query = _context.Employees
-                .Where(e => true)
-                .ProjectTo<EmployeeDto>(_mapper.ConfigurationProvider)
-                .AsQueryable();
+            Enum.TryParse(filterOrSortParams.Sort, out Sort sortEnum);
+            var query = _context.Employees.AsQueryable();
 
-            query = sort switch
+            if (filterOrSortParams.Genders != null)
             {
-                Sort.Gender => query.OrderBy(e => e.Gender),
-                Sort.Department => query.OrderBy(e => e.Department),
-                _ => query.OrderBy(e => e.Id),
-            };
+                filterOrSortParams.Genders = filterOrSortParams.Genders.Select(d => d.ToLower()).ToArray();
+                query = query.Where(e => filterOrSortParams.Genders.Contains(e.Gender.ToLower()));
+            }
 
-            return await query.ToListAsync();
+            if (filterOrSortParams.Departments != null)
+            {
+                filterOrSortParams.Departments = filterOrSortParams.Departments.Select(d => d.ToLower()).ToArray();
+                query = query.Where(e => filterOrSortParams.Departments.Contains(e.Department.ToLower()));
+            }
+
+            if (filterOrSortParams.Genders == null && filterOrSortParams.Departments == null)
+            {
+                query = query.Where(e => true);
+            }
+
+            if (filterOrSortParams.OrderBy == "asc")
+            {
+                query = sortEnum switch
+                {
+                    Sort.gender => query.OrderBy(e => e.Gender),
+                    Sort.department => query.OrderBy(e => e.Department),
+                    _ => query.OrderBy(e => e.Id),
+                };
+            }
+            else
+            {
+                query = sortEnum switch
+                {
+                    Sort.gender => query.OrderByDescending(e => e.Gender),
+                    Sort.department => query.OrderByDescending(e => e.Department),
+                    _ => query.OrderByDescending(e => e.Id),
+                };
+            }
+
+            return await query.ProjectTo<EmployeeDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         public async Task<bool> SaveAllAsync()

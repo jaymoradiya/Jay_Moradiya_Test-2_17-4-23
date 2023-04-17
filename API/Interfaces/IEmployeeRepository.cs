@@ -12,7 +12,7 @@ namespace API.Interfaces
         Task<Employee> GetEmployeeByIdAsync(int id);
         Task<EmployeeDto> GetEmployeeDtoByIdAsync(int id);
         Task<EmployeeDto> GetEmployeeByEmailAsync(string email);
-        Task<IEnumerable<EmployeeDto>> GetEmployeesAsync(Sort sort);
+        Task<IEnumerable<EmployeeDto>> GetEmployeesAsync(FilterOrSortParams sort);
         Task<IEnumerable<EmployeeDto>> SearchEmployeeAsync(string query);
         Task<bool> SaveAllAsync();
     }
