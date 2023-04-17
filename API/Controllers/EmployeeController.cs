@@ -21,6 +21,7 @@ namespace API.Controllers
         [HttpGet("all")]
         public async Task<ActionResult<ApiResponseDto<IEnumerable<EmployeeDto>>>> GetAllEmployee([FromQuery] FilterOrSortParams filterOrSortParams)
         {
+            System.Console.WriteLine(filterOrSortParams.Departments);
             var employees = await _employeeRepository.GetEmployeesAsync(filterOrSortParams);
 
             if (employees == null)

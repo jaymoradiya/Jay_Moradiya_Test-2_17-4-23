@@ -9,7 +9,7 @@ namespace API.Helpers
     {
         public string Sort { get; set; }
         public string OrderBy { get; set; } = "desc";
-        public string[] Departments { get; set; }
-        public string[] Genders { get; set; }
+        public string Departments { get; set; }
+        public string Genders { get; set; }
     }
 }

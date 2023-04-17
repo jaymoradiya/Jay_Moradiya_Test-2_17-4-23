@@ -1,0 +1,33 @@
+<form #form="ngForm" (ngSubmit)="onSave()">
+  <h3 mat-dialog-title>{{isEditMode ? "Update Employee "+employee.id : "Add Employee"}} </h3>
+  <mat-dialog-content>
+    <ejs-textbox placeholder="Id" name="id" class="my-2" floatLabelType="Auto" [(ngModel)]="employee.id"
+      *ngIf="isEditMode" disabled></ejs-textbox>
+    <ejs-textbox placeholder="Name*" name="name" class="my-2" floatLabelType="Auto" [(ngModel)]="employee.name"
+      required></ejs-textbox>
+    <ejs-textbox placeholder="Email*" name="email" class="my-2" floatLabelType="Auto" [(ngModel)]="employee.email"
+      required email></ejs-textbox>
+
+    <div class="form-group my-2">
+      <label for="gender" class="form-input me-2">Gender: </label>
+      <input type="radio" class="form-radio-input" value="male" name="gender" [(ngModel)]="employee.gender" required
+        checked [disabled]="isEditMode">
+      <label for="male" class="form-radio-label me-2">Male</label>
+      <input type="radio" class="form-radio-input" value="female" name="gender" [(ngModel)]="employee.gender" required
+        [disabled]="isEditMode">
+      <label for="female" class="form-radio-label">Female</label>
+    </div>
+
+    <div class="row">
+      <ejs-dropdownlist placeholder="Department" name="department" class="my-2 col" floatLabelType="Auto"
+        [(ngModel)]="employee.department" [dataSource]='departments' required></ejs-dropdownlist>
+      <ejs-datepicker placeholder="Date Of Birth*" name="dateOfBirth" class="my-2 col" floatLabelType="Auto" required
+        [(ngModel)]="selectedDate"></ejs-datepicker>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button class="btn btn-primary" type="submit" style="margin-right: 16px;" [disabled]="!form.valid">{{isEditMode ?
+      "Update" : "Add"}}</button>
+    <button class="btn btn-danger" type="button" (click)="onCancel()" style="margin-right: 12px;">Cancel</button>
+  </mat-dialog-actions>
+</form>

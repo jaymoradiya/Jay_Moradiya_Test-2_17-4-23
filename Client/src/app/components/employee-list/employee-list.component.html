@@ -1,0 +1,58 @@
+<div class="row pb-3">
+  <div class="col-2 me-auto">
+    <button class="btn btn-danger" (click)="onAdd()">Add Employee</button>
+  </div>
+
+  <div class="col-3 d-flex">
+    <ejs-textbox placeholder="Search by Name, Email, Gender" name="query" floatLabelType="Never" [(ngModel)]="query"
+      class="col" #searchInput></ejs-textbox>
+    <button class="ms-2 btn btn-primary" (click)="onSearch(searchInput.value)">Search</button>
+  </div>
+
+  <div class="col-3 d-flex">
+    <ejs-dropdowntree id='dropdownTree' name="dropdownTree" [fields]='filterFields' [showCheckBox]='true'
+      [treeSettings]='treeSettings' class="col" #filterOptions></ejs-dropdowntree>
+    <button class="ms-2 btn btn-primary" (click)="onFilter(filterOptions)">Filter</button>
+  </div>
+
+  <div class="form-group my-2">
+    <label for="gender" class="form-input me-2">SortBy: </label>
+    <input class="form-check-input me-1" type="radio" name="sort" id="department" value="department"
+      [(ngModel)]="sortBy">
+    <label class="form-check-label me-2" for="department">
+      Department
+    </label>
+    <input class="form-check-input me-1" type="radio" name="sort" id="gender" value="gender" checked>
+    <label class="form-check-label me-2" for="gender" [(ngModel)]="sortBy">
+      Gender
+    </label>
+  </div>
+  <div class="form-group my-2">
+    <label for="gender" class="form-input me-2">OrderBy: </label>
+    <input class="form-check-input me-1" type="radio" name="OrderBy" id="asc" value="asc" [(ngModel)]="orderBy">
+    <label class="form-check-label me-2" for="asc">
+      Asc
+    </label>
+    <input class="form-check-input me-1" type="radio" name="OrderBy" id="desc" value="desc" [(ngModel)]="orderBy">
+    <label class="form-check-label me-2" for="desc">
+      Desc
+    </label>
+  </div>
+</div>
+
+<ejs-grid #grid [dataSource]="employee" [enableImmutableMode]="isImmutable" height='100%'>
+  <e-columns>
+    <e-column field='id' headerText='Id' textAlign='left' width=120></e-column>
+    <e-column field='name' headerText='Name' isPrimaryKey="true" textAlign='left' width=120></e-column>
+    <e-column field='department' headerText='Department' textAlign='left' width=120></e-column>
+    <e-column field='email' headerText='Email' textAlign='left' width=120></e-column>
+    <e-column field='gender' headerText='Gender' textAlign='left' width=120></e-column>
+    <e-column field='dateOfBirth' headerText='Date Of Birth' textAlign='left' width=120></e-column>
+    <e-column headerText='Action' textAlign='Right' textAlign='left' width=200>
+      <ng-template #template let-data>
+        <button class="btn btn-info me-2" (click)="onEdit(data)">Edit</button>
+        <button (click)="onEmployeeDelete(data)" class="btn btn-danger">Delete</button>
+      </ng-template>
+    </e-column>
+  </e-columns>
+</ejs-grid>
