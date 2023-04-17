@@ -67,8 +67,8 @@ namespace API.Controllers
 
         }
 
-        [HttpPut]
-        public async Task<ActionResult<ApiResponseDto<string>>> UpdateEmployee([FromQuery] int id, [FromBody] UpdateEmployeeDto updateEmployeeDto)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ApiResponseDto<string>>> UpdateEmployee(int id, [FromBody] UpdateEmployeeDto updateEmployeeDto)
         {
 
             var savedEmployee = await _employeeRepository.GetEmployeeByIdAsync(id);
@@ -96,8 +96,8 @@ namespace API.Controllers
 
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<ApiResponseDto<string>>> DeleteEmployee([FromQuery] int id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ApiResponseDto<string>>> DeleteEmployee(int id)
         {
 
             var savedEmployeeDto = await _employeeRepository.GetEmployeeByIdAsync(id);
