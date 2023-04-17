@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Test_2.Data;
+using Test_2.Interfaces;
 
 namespace Test_2.Extensions
 {
@@ -13,6 +14,8 @@ namespace Test_2.Extensions
             {
                 opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
             });
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             return services;
         }
