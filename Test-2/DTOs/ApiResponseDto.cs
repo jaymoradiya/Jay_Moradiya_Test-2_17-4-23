@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-
 namespace Test_2.DTOs
 {
     public class ApiResponseDto<T>
