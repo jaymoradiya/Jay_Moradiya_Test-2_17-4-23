@@ -89,7 +89,7 @@ namespace API.Controllers
             }
 
             _mapper.Map(updateEmployeeDto, savedEmployee);
-
+            savedEmployee.UpdatedAt = DateTime.UtcNow;
             if (await _employeeRepository.SaveAllAsync())
             {
                 return Ok(ApiResponseDto<string>.Success(null, "employee updated!"));
