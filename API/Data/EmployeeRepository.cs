@@ -58,14 +58,16 @@ namespace API.Data
 
             if (filterOrSortParams.Genders != null)
             {
-                // filterOrSortParams.Genders = filterOrSortParams.Genders.Select(d => d.ToLower()).ToArray();
-                query = query.Where(e => filterOrSortParams.Genders.Contains(e.Gender.ToLower()));
+                var genders = filterOrSortParams.Genders.Split(",");
+                genders = genders.Select(d => d.ToLower()).ToArray();
+                query = query.Where(e => genders.Contains(e.Gender.ToLower()));
             }
 
             if (filterOrSortParams.Departments != null)
             {
-                // filterOrSortParams.Departments = filterOrSortParams.Departments.Select(d => d.ToLower()).ToArray();
-                query = query.Where(e => filterOrSortParams.Departments.Contains(e.Department.ToLower()));
+                var departments = filterOrSortParams.Departments.Split(",");
+                departments = departments.Select(d => d.ToLower()).ToArray();
+                query = query.Where(e => filterOrSortParams.Departments.ToLower().Contains(e.Department.ToLower()));
             }
 
             if (filterOrSortParams.Genders == null && filterOrSortParams.Departments == null)

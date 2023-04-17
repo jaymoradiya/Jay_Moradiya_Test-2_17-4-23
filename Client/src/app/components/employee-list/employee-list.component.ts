@@ -32,7 +32,7 @@ export class EmployeeListComponent implements OnInit {
       name: 'Gender',
       hasChild: true,
       expanded: false,
-      child: [{ name: 'Male' }, { name: 'Female' }],
+      child: [{ name: 'male' }, { name: 'female' }],
     },
     {
       name: 'Department',
@@ -68,6 +68,7 @@ export class EmployeeListComponent implements OnInit {
     private dialog: MatDialog
   ) {
     employeeService.employees.subscribe((employees) => {
+      console.log(employees);
       this.grid?.setProperties({
         dataSource: employees,
       });
@@ -110,13 +111,16 @@ export class EmployeeListComponent implements OnInit {
     this.filterOptions.department = null;
     this.filterOptions.gender = null;
     dropdowns.value?.forEach((v) => {
-      if (v === 'Male' || v === 'Female') {
-        if (this.filterOptions.gender) this.filterOptions.gender.push(v);
-        else this.filterOptions.gender = [v];
+      if (v.toLowerCase() === 'gender' || v.toLowerCase() === 'department') {
       } else {
-        if (this.filterOptions.department)
-          this.filterOptions.department.push(v);
-        else this.filterOptions.department = [v];
+        if (v === 'male' || v === 'female') {
+          if (this.filterOptions.gender) this.filterOptions.gender.push(v);
+          else this.filterOptions.gender = [v];
+        } else {
+          if (this.filterOptions.department)
+            this.filterOptions.department.push(v);
+          else this.filterOptions.department = [v];
+        }
       }
     });
     if (this.sortBy != '')
@@ -124,9 +128,6 @@ export class EmployeeListComponent implements OnInit {
         this.sortBy === 'department' ? Sort.Department : Sort.Gender;
     if (this.orderBy != '') this.filterOptions.orderBy = this.orderBy;
 
-    console.log(this.orderBy);
-    console.log(this.sortBy);
-    console.log(this.filterOptions);
     this.employeeService.getAllEmployees(this.filterOptions).subscribe();
   }
 }

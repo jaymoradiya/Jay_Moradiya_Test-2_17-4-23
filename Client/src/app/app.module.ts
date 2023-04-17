@@ -17,6 +17,8 @@ import {
   DropDownTreeModule,
 } from '@syncfusion/ej2-angular-dropdowns';
 import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
+import { ToastrModule } from 'ngx-toastr';
+import { ErrorInterceptor } from 'src/inteceptor/error.interceptor';
 
 @NgModule({
   declarations: [AppComponent, EmployeeListComponent, AddEditEmployeeComponent],
@@ -33,11 +35,20 @@ import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
     DropDownTreeModule,
     DropDownListModule,
     DatePickerModule,
+    ToastrModule.forRoot({
+      autoDismiss: true,
+      positionClass: 'toast-bottom-right',
+    }),
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: BaseUrlInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true,
     },
   ],
